@@ -3,4 +3,4 @@
 FROM mcr.microsoft.com/devcontainers/python:3.11
 
 RUN pip install --no-cache-dir --upgrade pip \
- && pip install --no-cache-dir pandas numpy dash plotly
+ && pip install --no-cache-dir pandas numpy dash plotly jupyterlab notebook ipykernel

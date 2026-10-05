@@ -7,6 +7,7 @@
         {
             "name": "Python: Main",
             "type": "debugpy",
+            "python": "/usr/local/bin/python",
             "args": ["2017", "False"],
             "request": "launch",
             "program": "${workspaceFolder}/main.py",
@@ -15,6 +16,7 @@
         {
             "name": "Python: UI",
             "type": "debugpy",
+            "python": "/usr/local/bin/python",
             "args": ["2017", "True"],
             "request": "launch",
             "program": "${workspaceFolder}/gui/dash_gui.py",

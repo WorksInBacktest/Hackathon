@@ -103,7 +103,7 @@ def running_rfq(n_clicks, value):
         return 'RFQ launched for {}'.format(value)
 
 
-# read the list of the clietns in the answer folder and create the initial dataframe
+# read the list of the clients in the answer folder and create the initial dataframe
 def read_clients_and_create_dataframe(value):
     global pnl_data
     date_jan = datetime.date(year=int(value), month=1, day=1).isoformat()
@@ -113,10 +113,9 @@ def read_clients_and_create_dataframe(value):
         if file.endswith(".py"):
             filename = os.fsdecode(file)
             name = filename.split(".")[0]
-            data[name] = 0
+            data[name] = 0.0  # Initialize with float values
     if not pnl_data:
-        pnl_data = pd.DataFrame(data, index=[date_jan])
-
+        pnl_data = pd.DataFrame(data, index=[date_jan], dtype=float)  # Ensure DataFrame uses float
 
 def parse_data_csv(pnl_table_inner):
     # read csv + plot
@@ -159,8 +158,16 @@ def server_socket():
     msg_len = 0
     while True:
         msg = client_socket.recv(1024)
+        if not msg:  # Check if the message is empty
+            print("[DEBUG] Received empty message, closing connection.")
+            break  # Exit the loop if the message is empty
+
         if new_msg:
-            msg_len = max(int(msg[:HEADER_SIZE]), 0)
+            try:
+                msg_len = max(int(msg[:HEADER_SIZE]), 0)
+            except ValueError:
+                print("[DEBUG] Invalid message header, skipping.")
+                continue  # Skip processing this message
             new_msg = False
 
         full_msg += msg.decode('utf-8')
